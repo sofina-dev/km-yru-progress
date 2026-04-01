@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KM YRU Progress</title>
+  <meta name="theme-color" content="#6c3bbd" />
+  <script src="./config.js"></script>
+
+  <style>
+    :root{
+      --primary:#6c3bbd;
+      --primary-2:#8f5de8;
+      --bg:#f6f4fb;
+      --card:#ffffff;
+      --text:#1f2430;
+      --muted:#667085;
+      --line:#ebe7f6;
+      --shadow:0 10px 30px rgba(76, 42, 130, .10);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      width:100%;
+      height:100%;
+      font-family:"Sarabun","Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(143,93,232,.14), transparent 26%),
+        radial-gradient(circle at bottom left, rgba(108,59,189,.12), transparent 25%),
+        var(--bg);
+      color:var(--text);
+      overflow:hidden;
+    }
+
+    .app-shell{
+      position:relative;
+      width:100%;
+      height:100%;
+    }
+
+    .brand{
+      position:absolute;
+      top:14px;
+      left:14px;
+      right:14px;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 16px;
+      background:rgba(255,255,255,.76);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .logo{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+      box-shadow:0 8px 20px rgba(108,59,189,.22);
+      flex:0 0 auto;
+    }
+
+    .brand-text{
+      min-width:0;
+    }
+
+    .brand-text h1{
+      margin:0;
+      font-size:18px;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand-text p{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .toolbar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex:0 0 auto;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:12px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+      transition:.2s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      color:#fff;
+      box-shadow:0 8px 18px rgba(108,59,189,.20);
+    }
+
+    .btn-secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .frame-wrap{
+      position:absolute;
+      inset:0;
+      padding:84px 12px 12px;
+    }
+
+    .frame-card{
+      width:100%;
+      height:100%;
+      border-radius:24px;
+      overflow:hidden;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow:var(--shadow);
+      position:relative;
+    }
+
+    iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      background:#fff;
+    }
+
+    .loading{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,244,251,.96));
+      z-index:15;
+      transition:opacity .35s ease, visibility .35s ease;
+    }
+
+    .loading.hide{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .loading-box{
+      width:min(92vw, 430px);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:28px 24px;
+      text-align:center;
+    }
+
+    .loading-icon{
+      width:64px;
+      height:64px;
+      margin:0 auto 16px;
+      position:relative;
+    }
+
+    .ring, .dot{
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+    }
+
+    .ring{
+      border:4px solid rgba(108,59,189,.14);
+    }
+
+    .dot{
+      border:4px solid transparent;
+      border-top-color:var(--primary);
+      border-right-color:var(--primary-2);
+      animation:spin 1s linear infinite;
+    }
+
+    .loading h2{
+      margin:0 0 8px;
+      font-size:20px;
+      color:var(--text);
+    }
+
+    .loading p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .progress{
+      margin-top:18px;
+      width:100%;
+      height:10px;
+      background:#f1ecfb;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress > span{
+      display:block;
+      width:40%;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--primary), var(--primary-2));
+      animation:slide 1.4s ease-in-out infinite;
+    }
+
+    .error-box{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(246,244,251,.96);
+      z-index:16;
+      padding:20px;
+    }
+
+    .error-card{
+      max-width:560px;
+      width:100%;
+      background:#fff;
+      border:1px solid #f0d5d5;
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      text-align:center;
+    }
+
+    .error-card h3{
+      margin:0 0 8px;
+      color:#8f1d1d;
+    }
+
+    .error-card p{
+      margin:0 0 16px;
+      color:#6b7280;
+      line-height:1.6;
+    }
+
+    @keyframes spin{
+      to{transform:rotate(360deg);}
+    }
+
+    @keyframes slide{
+      0%{transform:translateX(-120%);}
+      100%{transform:translateX(280%);}
+    }
+
+    @media (max-width:768px){
+      .brand{
+        padding:12px;
+        align-items:flex-start;
+        flex-direction:column;
+      }
+      .toolbar{
+        width:100%;
+      }
+      .btn{
+        flex:1;
+        justify-content:center;
+      }
+      .frame-wrap{
+        padding:126px 10px 10px;
+      }
+      .brand-text h1{
+        font-size:16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="brand" id="brandBar">
+      <div class="brand-left">
+        <div class="logo">KM</div>
+        <div class="brand-text">
+          <h1 id="appName">ระบบรายงานความก้าวหน้า KM มหาวิทยาลัยราชภัฏยะลา</h1>
+          <p id="appSubtitle">Knowledge Management Progress Reporting System</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <a class="btn btn-secondary" id="openDirectBtn" href="#" target="_blank" rel="noopener noreferrer">เปิดระบบโดยตรง</a>
+        <button class="btn btn-primary" id="reloadBtn" type="button">รีโหลด</button>
+      </div>
+    </div>
+
+    <div class="frame-wrap">
+      <div class="frame-card">
+        <div class="loading" id="loading">
+          <div class="loading-box">
+            <div class="loading-icon">
+              <div class="ring"></div>
+              <div class="dot"></div>
+            </div>
+            <h2 id="loadingTitle">กำลังเชื่อมต่อระบบ</h2>
+            <p>กรุณารอสักครู่ ระบบกำลังเปิดหน้าใช้งานล่าสุด</p>
+            <div class="progress"><span></span></div>
+          </div>
+        </div>
+
+        <div class="error-box" id="errorBox">
+          <div class="error-card">
+            <h3>ไม่สามารถแสดงผลผ่านหน้า Cloudflare ได้</h3>
+            <p>
+              อาจเกิดจากฝั่ง Google Apps Script ยังไม่อนุญาตให้แสดงใน iframe
+              หรือมีการเปลี่ยนแปลง URL ของ Web App
+            </p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <a class="btn btn-primary" id="errorOpenDirect" href="#" target="_blank" rel="noopener noreferrer">เปิดระบบโดยตรง</a>
+              <button class="btn btn-secondary" type="button" onclick="location.reload()">ลองใหม่</button>
+            </div>
+          </div>
+        </div>
+
+        <iframe id="appFrame" title="KM YRU Progress"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const cfg = window.APP_CONFIG || {};
+      const APP_NAME = cfg.APP_NAME || "KM YRU Progress";
+      const APP_SUBTITLE = cfg.APP_SUBTITLE || "";
+      const GAS_URL = cfg.GAS_URL || "";
+      const SHOW_TOP_BRAND = cfg.SHOW_TOP_BRAND !== false;
+      const LOADING_TEXT = cfg.LOADING_TEXT || "กำลังเชื่อมต่อระบบ...";
+      const THEME_COLOR = cfg.THEME_COLOR || "#6c3bbd";
+      const THEME_COLOR_2 = cfg.THEME_COLOR_2 || "#8f5de8";
+
+      document.documentElement.style.setProperty("--primary", THEME_COLOR);
+      document.documentElement.style.setProperty("--primary-2", THEME_COLOR_2);
+
+      const appName = document.getElementById("appName");
+      const appSubtitle = document.getElementById("appSubtitle");
+      const brandBar = document.getElementById("brandBar");
+      const loading = document.getElementById("loading");
+      const loadingTitle = document.getElementById("loadingTitle");
+      const iframe = document.getElementById("appFrame");
+      const openDirectBtn = document.getElementById("openDirectBtn");
+      const errorOpenDirect = document.getElementById("errorOpenDirect");
+      const errorBox = document.getElementById("errorBox");
+      const reloadBtn = document.getElementById("reloadBtn");
+
+      appName.textContent = APP_NAME;
+      appSubtitle.textContent = APP_SUBTITLE;
+      loadingTitle.textContent = LOADING_TEXT;
+
+      if (!SHOW_TOP_BRAND) brandBar.style.display = "none";
+
+      function buildTargetUrl() {
+        const url = new URL(GAS_URL);
+        const current = new URL(window.location.href);
+
+        current.searchParams.forEach((value, key) => {
+          url.searchParams.set(key, value);
+        });
+
+        if (current.hash) {
+          url.hash = current.hash;
+        }
+
+        return url.toString();
+      }
+
+      if (!GAS_URL) {
+        errorBox.style.display = "flex";
+        loading.classList.add("hide");
+        return;
+      }
+
+      const targetUrl = buildTargetUrl();
+
+      openDirectBtn.href = targetUrl;
+      errorOpenDirect.href = targetUrl;
+
+      let loaded = false;
+      let failTimer = setTimeout(() => {
+        if (!loaded) {
+          errorBox.style.display = "flex";
+          loading.classList.add("hide");
+        }
+      }, 12000);
+
+      iframe.addEventListener("load", () => {
+        loaded = true;
+        clearTimeout(failTimer);
+        loading.classList.add("hide");
+      });
+
+      reloadBtn.addEventListener("click", () => {
+        loading.classList.remove("hide");
+        errorBox.style.display = "none";
+        loaded = false;
+        clearTimeout(failTimer);
+        failTimer = setTimeout(() => {
+          if (!loaded) {
+            errorBox.style.display = "flex";
+            loading.classList.add("hide");
+          }
+        }, 12000);
+
+        iframe.src = buildTargetUrl();
+      });
+
+      iframe.src = targetUrl;
+    })();
+  </script>
+</body>
+</html>
