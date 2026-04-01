@@ -1,4 +1,3 @@
-<script>
 window.APP_CONFIG = {
   APP_NAME: "ระบบรายงานความก้าวหน้า KM มหาวิทยาลัยราชภัฏยะลา",
   APP_SHORT_NAME: "KM YRU Progress",
@@ -9,4 +8,3 @@ window.APP_CONFIG = {
   SHOW_TOP_BRAND: true,
   LOADING_TEXT: "กำลังเชื่อมต่อระบบ..."
 };
-</script>
