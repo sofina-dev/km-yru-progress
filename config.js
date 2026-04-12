@@ -5,6 +5,5 @@ window.APP_CONFIG = {
   GAS_URL: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbxilvjjar8fmUIVKc3_hGokjWDJDk7gyH5RjQki648qxbV2_DSsHr2B3vFLhDxiS4e3/exec",
   THEME_COLOR: "#6c3bbd",
   THEME_COLOR_2: "#8f5de8",
-  SHOW_TOP_BRAND: true,
   LOADING_TEXT: "กำลังเชื่อมต่อระบบ..."
 };
