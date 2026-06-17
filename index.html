@@ -1,248 +1,460 @@
 <!doctype html>
 <html lang="th">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KM YRU Progress</title>
-  <meta name="theme-color" content="#6c3bbd" />
-  <script src="./config.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#6c3bbd">
+    <title>YRU Digital Portal</title>
+    <style>
+      :root {
+        --km: #6c3bbd;
+        --km-soft: #8f5de8;
+        --inno: #d83d83;
+        --inno-deep: #3d313b;
+        --ink: #24202a;
+        --muted: #6d6570;
+        --line: rgba(255, 255, 255, 0.22);
+        --paper: #ffffff;
+      }
 
-  <style>
-    :root{
-      --primary:#6c3bbd;
-      --primary-2:#8f5de8;
-      --bg:#ffffff;
-    }
+      * {
+        box-sizing: border-box;
+      }
 
-    *{ box-sizing:border-box; }
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
 
-    html, body{
-      margin:0;
-      padding:0;
-      width:100%;
-      height:100%;
-      background:var(--bg);
-      overflow:hidden;
-      font-family:"Sarabun","Segoe UI",Tahoma,sans-serif;
-    }
+      body {
+        background:
+          radial-gradient(circle at 18% 16%, rgba(143, 93, 232, 0.26), transparent 28%),
+          radial-gradient(circle at 82% 18%, rgba(216, 61, 131, 0.24), transparent 30%),
+          linear-gradient(135deg, #f8f5fb 0%, #f2edf4 48%, #fff 100%);
+        color: var(--ink);
+        font-family: "Sarabun", "Segoe UI", Tahoma, sans-serif;
+      }
 
-    .app-shell{
-      position:fixed;
-      inset:0;
-      width:100%;
-      height:100%;
-      background:#fff;
-    }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-    iframe{
-      width:100%;
-      height:100%;
-      border:none;
-      display:block;
-      background:#fff;
-    }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
 
-    .loading{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,.96);
-      z-index:10;
-      transition:opacity .3s ease, visibility .3s ease;
-    }
+      .gateway {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 100dvh;
+        padding: clamp(18px, 4vw, 54px);
+      }
 
-    .loading.hide{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-    }
+      .topbar,
+      .footer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+      }
 
-    .loading-box{
-      text-align:center;
-      padding:24px;
-    }
+      .brand {
+        align-items: center;
+        display: flex;
+        gap: 14px;
+        font-weight: 900;
+      }
 
-    .loading-spinner{
-      width:54px;
-      height:54px;
-      margin:0 auto 14px;
-      border-radius:50%;
-      border:4px solid rgba(108,59,189,.15);
-      border-top-color:var(--primary);
-      border-right-color:var(--primary-2);
-      animation:spin 1s linear infinite;
-    }
+      .brand-mark {
+        align-items: center;
+        background: #fff;
+        border: 1px solid rgba(36, 32, 42, 0.08);
+        box-shadow: 0 14px 40px rgba(36, 32, 42, 0.09);
+        display: inline-flex;
+        height: 58px;
+        justify-content: center;
+        overflow: hidden;
+        padding: 7px;
+        width: 58px;
+      }
 
-    .loading h2{
-      margin:0;
-      font-size:20px;
-      color:#2b2b2b;
-    }
+      .brand-mark img {
+        display: block;
+        height: 100%;
+        object-fit: contain;
+        width: 100%;
+      }
 
-    .loading p{
-      margin:8px 0 0;
-      color:#666;
-      font-size:14px;
-    }
+      .top-links {
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        font-size: 14px;
+        font-weight: 700;
+      }
 
-    .error-box{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,.96);
-      z-index:11;
-      padding:20px;
-    }
+      .hero {
+        align-content: center;
+        display: grid;
+        gap: clamp(28px, 4vw, 44px);
+        grid-template-columns: minmax(280px, 0.8fr) minmax(520px, 1.2fr);
+        padding: clamp(42px, 7vw, 86px) 0;
+      }
 
-    .error-card{
-      max-width:520px;
-      width:100%;
-      background:#fff;
-      border:1px solid #eee;
-      border-radius:18px;
-      padding:24px;
-      text-align:center;
-      box-shadow:0 10px 30px rgba(0,0,0,.08);
-    }
+      .hero-copy {
+        align-self: center;
+      }
 
-    .error-card h3{
-      margin:0 0 10px;
-      color:#8f1d1d;
-    }
+      .eyebrow {
+        color: var(--inno);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0;
+        margin: 0 0 14px;
+        text-transform: uppercase;
+      }
 
-    .error-card p{
-      margin:0 0 16px;
-      color:#666;
-      line-height:1.6;
-    }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
 
-    .btn-row{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
+      h1 {
+        font-size: clamp(42px, 7vw, 86px);
+        line-height: 0.98;
+      }
 
-    .btn{
-      appearance:none;
-      border:none;
-      border-radius:12px;
-      padding:10px 14px;
-      cursor:pointer;
-      font-size:14px;
-      font-weight:600;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-    }
+      .lede {
+        color: var(--muted);
+        font-size: clamp(17px, 2vw, 22px);
+        line-height: 1.75;
+        margin-top: 24px;
+        max-width: 680px;
+      }
 
-    .btn-primary{
-      background:linear-gradient(135deg, var(--primary), var(--primary-2));
-      color:#fff;
-    }
+      .system-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
 
-    .btn-secondary{
-      background:#fff;
-      color:#333;
-      border:1px solid #ddd;
-    }
+      .system-card {
+        border: 1px solid rgba(255, 255, 255, 0.76);
+        box-shadow: 0 24px 76px rgba(36, 32, 42, 0.12);
+        color: #fff;
+        display: grid;
+        min-height: 520px;
+        overflow: hidden;
+        padding: clamp(26px, 3.5vw, 42px);
+        position: relative;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+      }
 
-    @keyframes spin{
-      to{ transform:rotate(360deg); }
-    }
-  </style>
-</head>
-<body>
-  <div class="app-shell">
-    <div class="loading" id="loading">
-      <div class="loading-box">
-        <div class="loading-spinner"></div>
-        <h2 id="loadingTitle">กำลังเชื่อมต่อระบบ...</h2>
-        <p>กรุณารอสักครู่</p>
-      </div>
-    </div>
+      .system-card:hover {
+        box-shadow: 0 30px 90px rgba(36, 32, 42, 0.18);
+        transform: translateY(-4px);
+      }
 
-    <div class="error-box" id="errorBox">
-      <div class="error-card">
-        <h3>ไม่สามารถแสดงผลผ่าน iframe ได้</h3>
-        <p>
-          อาจเกิดจากฝั่ง Google Apps Script ยังไม่อนุญาตให้ฝังใน iframe
-          หรือ URL ของ Web App ไม่ถูกต้อง
-        </p>
-        <div class="btn-row">
-          <a class="btn btn-primary" id="openDirectBtn" href="#" target="_blank" rel="noopener noreferrer">เปิดระบบโดยตรง</a>
-          <button class="btn btn-secondary" type="button" onclick="location.reload()">ลองใหม่</button>
+      .system-card::before {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 42%),
+          repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 26px);
+        content: "";
+        inset: 0;
+        opacity: 0.75;
+        position: absolute;
+      }
+
+      .system-card > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .km-card {
+        background:
+          linear-gradient(145deg, rgba(43, 28, 78, 0.90), rgba(108, 59, 189, 0.88)),
+          linear-gradient(45deg, var(--km), var(--km-soft));
+      }
+
+      .innovation-card {
+        background:
+          linear-gradient(145deg, rgba(61, 49, 59, 0.94), rgba(216, 61, 131, 0.82)),
+          linear-gradient(45deg, var(--inno-deep), var(--inno));
+      }
+
+      .system-label {
+        align-self: start;
+        border: 1px solid var(--line);
+        display: inline-flex;
+        font-size: 12px;
+        font-weight: 900;
+        justify-self: start;
+        padding: 8px 10px;
+        text-transform: uppercase;
+      }
+
+      .system-card h2 {
+        align-self: end;
+        font-size: clamp(32px, 5vw, 58px);
+        line-height: 1.02;
+        max-width: 360px;
+      }
+
+      .system-card p {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 17px;
+        line-height: 1.7;
+        margin-top: 18px;
+      }
+
+      .system-action {
+        align-items: center;
+        background: #fff;
+        color: var(--ink);
+        display: inline-flex;
+        font-weight: 900;
+        justify-self: start;
+        margin-top: 28px;
+        min-height: 48px;
+        padding: 13px 18px;
+      }
+
+      .footer {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .frame-page {
+        background: #fff;
+        display: none;
+        height: 100dvh;
+        overflow: hidden;
+      }
+
+      .frame-toolbar {
+        align-items: center;
+        background:
+          linear-gradient(120deg, rgba(61, 49, 59, 0.97), rgba(108, 59, 189, 0.72)),
+          linear-gradient(45deg, var(--inno-deep), var(--inno));
+        color: #fff;
+        display: flex;
+        gap: 14px;
+        justify-content: space-between;
+        min-height: 62px;
+        padding: 10px clamp(14px, 3vw, 32px);
+      }
+
+      .frame-title {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        font-weight: 900;
+      }
+
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .toolbar-button {
+        border: 1px solid rgba(255, 255, 255, 0.30);
+        color: #fff;
+        display: inline-flex;
+        font-size: 14px;
+        font-weight: 800;
+        padding: 9px 12px;
+      }
+
+      iframe {
+        border: 0;
+        display: block;
+        height: calc(100dvh - 62px);
+        width: 100vw;
+      }
+
+      .loading {
+        align-items: center;
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--ink);
+        display: none;
+        inset: 62px 0 0;
+        justify-content: center;
+        position: fixed;
+        text-align: center;
+        z-index: 3;
+      }
+
+      .loading.is-active {
+        display: flex;
+      }
+
+      .spinner {
+        border: 4px solid rgba(108, 59, 189, 0.16);
+        border-radius: 50%;
+        border-right-color: var(--inno);
+        border-top-color: var(--km);
+        height: 52px;
+        margin: 0 auto 14px;
+        width: 52px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .system-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .system-card {
+          min-height: 380px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .topbar,
+        .footer,
+        .frame-toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .toolbar-actions {
+          justify-content: flex-start;
+        }
+
+        h1 {
+          font-size: 42px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="gateway" id="gateway">
+      <nav class="topbar">
+        <div class="brand">
+          <span class="brand-mark">
+              <!-- Local placeholder logo added. To replace with the original
+                download the Drive file and overwrite `assets/logo.svg`. -->
+              <img src="assets/logo.jpg" alt="YRU">
+          </span>
+          <span>Yala Rajabhat University</span>
+        </div>
+        <div class="top-links">
+          <a href="?system=km">KM Progress</a>
+          <a href="?system=innovation">Innovation Portal</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">YRU Digital Gateway</p>
+          <h1>KM & Innovation Portal</h1>
+          <p class="lede">
+            จุดเริ่มต้นเดียวสำหรับระบบจัดการความรู้และระบบเผยแพร่นวัตกรรมของมหาวิทยาลัยราชภัฏยะลา
+            เลือกระบบที่ต้องการใช้งาน แล้วเข้าสู่พื้นที่ทำงานได้ทันที
+          </p>
+        </div>
+
+        <div class="system-grid">
+          <a class="system-card km-card" href="?system=km">
+            <span class="system-label">Knowledge Management</span>
+            <div>
+              <h2>KM Progress</h2>
+              <p>ติดตามความก้าวหน้า จัดเก็บหลักฐาน และรายงานผลการดำเนินงานด้านการจัดการความรู้ของหน่วยงาน</p>
+              <span class="system-action">เข้าสู่ระบบ KM</span>
+            </div>
+          </a>
+
+          <a class="system-card innovation-card" href="?system=innovation">
+            <span class="system-label">Innovation</span>
+            <div>
+              <h2>YRU Innovation</h2>
+              <p>บันทึก ประเมิน ประกาศผล และเผยแพร่ผลงานนวัตกรรมในรูปแบบคลังข่าวสารสาธารณะที่ทันสมัย</p>
+              <span class="system-action">เข้าสู่ระบบนวัตกรรม</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>สำนักงานประกันคุณภาพ สำนักงานอธิการบดี มหาวิทยาลัยราชภัฏยะลา</span>
+        <span>YRU Digital Portal</span>
+      </footer>
+    </main>
+
+    <section class="frame-page" id="framePage">
+      <div class="frame-toolbar">
+        <div class="frame-title" id="frameTitle">YRU Digital Portal</div>
+        <div class="toolbar-actions">
+          <a class="toolbar-button" href="./">หน้าหลัก</a>
+          <a class="toolbar-button" id="openDirect" href="#" target="_blank" rel="noopener noreferrer">เปิดระบบโดยตรง</a>
         </div>
       </div>
-    </div>
+      <div class="loading is-active" id="loading">
+        <div>
+          <div class="spinner"></div>
+          <strong id="loadingText">กำลังเชื่อมต่อระบบ...</strong>
+        </div>
+      </div>
+      <iframe id="systemFrame" title="YRU System" allow="fullscreen; clipboard-read; clipboard-write" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
 
-    <iframe id="appFrame" title="KM YRU Progress"></iframe>
-  </div>
+    <script>
+      const SYSTEMS = {
+        km: {
+          name: "KM YRU Progress",
+          loading: "กำลังเชื่อมต่อระบบ KM...",
+          url: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbwogjoEBPfyszGTYUQKjDzMybXQAhqbNu9UDiRlasrj-K5TQGWTLM-UZOpkssaroXoUDg/exec"
+        },
+        innovation: {
+          name: "YRU Innovation Portal",
+          loading: "กำลังเชื่อมต่อระบบนวัตกรรม...",
+          url: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbzUGqrpeU_c1juwM2komyAa-Vjp-Xs0vwDk11yjspbVXT_gGZBGng89sd5bfm1G3Fk6Yw/exec"
+        }
+      };
 
-  <script>
-    (function () {
-      const cfg = window.APP_CONFIG || {};
-      const GAS_URL = cfg.GAS_URL || "";
-      const LOADING_TEXT = cfg.LOADING_TEXT || "กำลังเชื่อมต่อระบบ...";
-      const THEME_COLOR = cfg.THEME_COLOR || "#6c3bbd";
-      const THEME_COLOR_2 = cfg.THEME_COLOR_2 || "#8f5de8";
+      const params = new URLSearchParams(window.location.search);
+      const systemKey = params.get("system");
+      const selected = SYSTEMS[systemKey];
 
-      document.documentElement.style.setProperty("--primary", THEME_COLOR);
-      document.documentElement.style.setProperty("--primary-2", THEME_COLOR_2);
-
-      const iframe = document.getElementById("appFrame");
-      const loading = document.getElementById("loading");
-      const loadingTitle = document.getElementById("loadingTitle");
-      const errorBox = document.getElementById("errorBox");
-      const openDirectBtn = document.getElementById("openDirectBtn");
-
-      loadingTitle.textContent = LOADING_TEXT;
-
-      function buildTargetUrl() {
-        const url = new URL(GAS_URL);
-        const current = new URL(window.location.href);
-
-        current.searchParams.forEach((value, key) => {
-          url.searchParams.set(key, value);
+      function buildTargetUrl(baseUrl) {
+        const target = new URL(baseUrl);
+        params.forEach((value, key) => {
+          if (key !== "system") {
+            target.searchParams.set(key, value);
+          }
         });
-
-        if (current.hash) {
-          url.hash = current.hash;
+        if (window.location.hash) {
+          target.hash = window.location.hash;
         }
-
-        return url.toString();
+        return target.toString();
       }
 
-      if (!GAS_URL) {
-        loading.classList.add("hide");
-        errorBox.style.display = "flex";
-        return;
+      if (selected) {
+        const targetUrl = buildTargetUrl(selected.url);
+        const frame = document.getElementById("systemFrame");
+        document.title = selected.name;
+        document.getElementById("gateway").style.display = "none";
+        document.getElementById("framePage").style.display = "block";
+        document.getElementById("frameTitle").textContent = selected.name;
+        document.getElementById("loadingText").textContent = selected.loading;
+        document.getElementById("openDirect").href = targetUrl;
+        frame.addEventListener("load", () => document.getElementById("loading").classList.remove("is-active"));
+        frame.src = targetUrl;
       }
-
-      const targetUrl = buildTargetUrl();
-      openDirectBtn.href = targetUrl;
-
-      let loaded = false;
-      let failTimer = setTimeout(() => {
-        if (!loaded) {
-          loading.classList.add("hide");
-          errorBox.style.display = "flex";
-        }
-      }, 12000);
-
-      iframe.addEventListener("load", () => {
-        loaded = true;
-        clearTimeout(failTimer);
-        loading.classList.add("hide");
-      });
-
-      iframe.src = targetUrl;
-    })();
-  </script>
-</body>
+    </script>
+  </body>
 </html>
