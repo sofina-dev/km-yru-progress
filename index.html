@@ -421,7 +421,9 @@
           return {};
         }
       })();
-      const portalConfig = Object.assign({}, window.PORTAL_CONFIG || {}, storedConfig);
+      const fileConfig = window.PORTAL_CONFIG || {};
+      const storedConfigIsCurrent = storedConfig.CONFIG_VERSION && storedConfig.CONFIG_VERSION === fileConfig.CONFIG_VERSION;
+      const portalConfig = Object.assign({}, fileConfig, storedConfigIsCurrent ? storedConfig : {});
       const logo = document.querySelector(".brand-mark img");
       if (logo && portalConfig.LOGO_URL) {
         logo.src = portalConfig.LOGO_URL;

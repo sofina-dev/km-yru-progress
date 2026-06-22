@@ -155,6 +155,7 @@
         const innovationValid = validate(innovationInput, "innovationValidation");
         if (!kmValid || !innovationValid) return;
         localStorage.setItem("yruPortalConfig", JSON.stringify({
+          CONFIG_VERSION: defaults.CONFIG_VERSION || "",
           KM_WEB_APP_URL: kmInput.value.trim(),
           INNOVATION_WEB_APP_URL: innovationInput.value.trim(),
           LOGO_URL: defaults.LOGO_URL || "assets/logo.jpg"
@@ -165,6 +166,7 @@
       document.getElementById("downloadButton").addEventListener("click", () => {
         if (!validate(kmInput, "kmValidation") || !validate(innovationInput, "innovationValidation")) return;
         const config = {
+          CONFIG_VERSION: defaults.CONFIG_VERSION || "",
           KM_WEB_APP_URL: kmInput.value.trim(),
           INNOVATION_WEB_APP_URL: innovationInput.value.trim(),
           LOGO_URL: defaults.LOGO_URL || "assets/logo.jpg"
