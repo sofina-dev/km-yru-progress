@@ -1,9 +1,5 @@
-window.APP_CONFIG = {
-  APP_NAME: "ระบบรายงานความก้าวหน้า KM มหาวิทยาลัยราชภัฏยะลา",
-  APP_SHORT_NAME: "KM YRU Progress",
-  APP_SUBTITLE: "Knowledge Management Progress Reporting System",
-  GAS_URL: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbwogjoEBPfyszGTYUQKjDzMybXQAhqbNu9UDiRlasrj-K5TQGWTLM-UZOpkssaroXoUDg/exec",
-  THEME_COLOR: "#6c3bbd",
-  THEME_COLOR_2: "#8f5de8",
-  LOADING_TEXT: "กำลังเชื่อมต่อระบบ..."
+window.PORTAL_CONFIG = {
+  KM_WEB_APP_URL: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbwogjoEBPfyszGTYUQKjDzMybXQAhqbNu9UDiRlasrj-K5TQGWTLM-UZOpkssaroXoUDg/exec",
+  INNOVATION_WEB_APP_URL: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbzUGqrpeU_c1juwM2komyAa-Vjp-Xs0vwDk11yjspbVXT_gGZBGng89sd5bfm1G3Fk6Yw/exec",
+  LOGO_URL: "assets/logo.jpg"
 };

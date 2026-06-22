@@ -6,6 +6,7 @@
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#6c3bbd">
     <title>YRU Digital Portal</title>
+    <script src="./config.js"></script>
     <style>
       :root {
         --km: #6c3bbd;
@@ -355,6 +356,7 @@
         <div class="top-links">
           <a href="?system=km">KM Progress</a>
           <a href="?system=innovation">Innovation Portal</a>
+          <a href="./settings.html">ตั้งค่า Web App</a>
         </div>
       </nav>
 
@@ -413,16 +415,29 @@
     </section>
 
     <script>
+      const storedConfig = (() => {
+        try {
+          return JSON.parse(localStorage.getItem("yruPortalConfig") || "{}");
+        } catch (error) {
+          return {};
+        }
+      })();
+      const portalConfig = Object.assign({}, window.PORTAL_CONFIG || {}, storedConfig);
+      const logo = document.querySelector(".brand-mark img");
+      if (logo && portalConfig.LOGO_URL) {
+        logo.src = portalConfig.LOGO_URL;
+      }
+
       const SYSTEMS = {
         km: {
           name: "KM YRU Progress",
           loading: "กำลังเชื่อมต่อระบบ KM...",
-          url: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbwogjoEBPfyszGTYUQKjDzMybXQAhqbNu9UDiRlasrj-K5TQGWTLM-UZOpkssaroXoUDg/exec"
+          url: portalConfig.KM_WEB_APP_URL || ""
         },
         innovation: {
           name: "YRU Innovation Portal",
           loading: "กำลังเชื่อมต่อระบบนวัตกรรม...",
-          url: "https://script.google.com/a/macros/yru.ac.th/s/AKfycbzUGqrpeU_c1juwM2komyAa-Vjp-Xs0vwDk11yjspbVXT_gGZBGng89sd5bfm1G3Fk6Yw/exec"
+          url: portalConfig.INNOVATION_WEB_APP_URL || ""
         }
       };
 
@@ -444,6 +459,10 @@
       }
 
       if (selected) {
+        if (!selected.url) {
+          window.location.href = "./settings.html?missing=" + encodeURIComponent(systemKey);
+          throw new Error("Missing Web App URL");
+        }
         const targetUrl = buildTargetUrl(selected.url);
         const frame = document.getElementById("systemFrame");
         document.title = selected.name;
