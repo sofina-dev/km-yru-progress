@@ -252,46 +252,10 @@
         overflow: hidden;
       }
 
-      .frame-toolbar {
-        align-items: center;
-        background:
-          linear-gradient(120deg, rgba(61, 49, 59, 0.97), rgba(108, 59, 189, 0.72)),
-          linear-gradient(45deg, var(--inno-deep), var(--inno));
-        color: #fff;
-        display: flex;
-        gap: 14px;
-        justify-content: space-between;
-        min-height: 62px;
-        padding: 10px clamp(14px, 3vw, 32px);
-      }
-
-      .frame-title {
-        align-items: center;
-        display: flex;
-        gap: 12px;
-        font-weight: 900;
-      }
-
-      .toolbar-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: flex-end;
-      }
-
-      .toolbar-button {
-        border: 1px solid rgba(255, 255, 255, 0.30);
-        color: #fff;
-        display: inline-flex;
-        font-size: 14px;
-        font-weight: 800;
-        padding: 9px 12px;
-      }
-
       iframe {
         border: 0;
         display: block;
-        height: calc(100dvh - 62px);
+        height: 100dvh;
         width: 100vw;
       }
 
@@ -300,7 +264,7 @@
         background: rgba(255, 255, 255, 0.94);
         color: var(--ink);
         display: none;
-        inset: 62px 0 0;
+        inset: 0;
         justify-content: center;
         position: fixed;
         text-align: center;
@@ -339,14 +303,9 @@
 
       @media (max-width: 640px) {
         .topbar,
-        .footer,
-        .frame-toolbar {
+        .footer {
           align-items: flex-start;
           flex-direction: column;
-        }
-
-        .toolbar-actions {
-          justify-content: flex-start;
         }
 
         h1 {
@@ -407,13 +366,6 @@
     </main>
 
     <section class="frame-page" id="framePage">
-      <div class="frame-toolbar">
-        <div class="frame-title" id="frameTitle">YRU Digital Portal</div>
-        <div class="toolbar-actions">
-          <a class="toolbar-button" href="./">หน้าหลัก</a>
-          <a class="toolbar-button" id="openDirect" href="#" target="_blank" rel="noopener noreferrer">เปิดระบบโดยตรง</a>
-        </div>
-      </div>
       <div class="loading is-active" id="loading">
         <div>
           <div class="spinner"></div>
@@ -479,9 +431,7 @@
         document.title = selected.name;
         document.getElementById("gateway").style.display = "none";
         document.getElementById("framePage").style.display = "block";
-        document.getElementById("frameTitle").textContent = selected.name;
         document.getElementById("loadingText").textContent = selected.loading;
-        document.getElementById("openDirect").href = targetUrl;
         frame.addEventListener("load", () => document.getElementById("loading").classList.remove("is-active"));
         frame.src = targetUrl;
       }
