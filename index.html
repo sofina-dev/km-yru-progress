@@ -415,6 +415,7 @@
             target.searchParams.set(key, value);
           }
         });
+        target.searchParams.set("_portalVersion", portalConfig.CONFIG_VERSION || Date.now().toString());
         if (window.location.hash) {
           target.hash = window.location.hash;
         }
