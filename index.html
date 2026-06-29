@@ -399,9 +399,8 @@
         },
         innovation: {
           name: "YRU Innovation Portal",
-          loading: "กำลังเปิดระบบนวัตกรรม...",
-          url: portalConfig.INNOVATION_WEB_APP_URL || "",
-          directRedirect: true
+          loading: "กำลังเชื่อมต่อระบบนวัตกรรม...",
+          url: portalConfig.INNOVATION_WEB_APP_URL || ""
         }
       };
 
@@ -429,21 +428,11 @@
           throw new Error("Missing Web App URL");
         }
         const targetUrl = buildTargetUrl(selected.url);
+        const frame = document.getElementById("systemFrame");
         document.title = selected.name;
         document.getElementById("gateway").style.display = "none";
         document.getElementById("framePage").style.display = "block";
         document.getElementById("loadingText").textContent = selected.loading;
-        document.getElementById("loading").classList.add("is-active");
-
-        if (selected.directRedirect) {
-          // Apps Script's own nested iframe sandboxing is slow enough already;
-          // wrapping it in another iframe here just adds a layer with no
-          // benefit and no native browser loading feedback during the wait.
-          window.location.href = targetUrl;
-          throw new Error("Redirecting directly to Apps Script");
-        }
-
-        const frame = document.getElementById("systemFrame");
         frame.addEventListener("load", () => document.getElementById("loading").classList.remove("is-active"));
         frame.src = targetUrl;
       }
