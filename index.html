@@ -428,13 +428,17 @@
           throw new Error("Missing Web App URL");
         }
         const targetUrl = buildTargetUrl(selected.url);
-        const frame = document.getElementById("systemFrame");
-        document.title = selected.name;
-        document.getElementById("gateway").style.display = "none";
-        document.getElementById("framePage").style.display = "block";
-        document.getElementById("loadingText").textContent = selected.loading;
-        frame.addEventListener("load", () => document.getElementById("loading").classList.remove("is-active"));
-        frame.src = targetUrl;
+        if (systemKey === "km") {
+          window.location.replace(targetUrl);
+        } else {
+          const frame = document.getElementById("systemFrame");
+          document.title = selected.name;
+          document.getElementById("gateway").style.display = "none";
+          document.getElementById("framePage").style.display = "block";
+          document.getElementById("loadingText").textContent = selected.loading;
+          frame.addEventListener("load", () => document.getElementById("loading").classList.remove("is-active"));
+          frame.src = targetUrl;
+        }
       }
     </script>
   </body>
